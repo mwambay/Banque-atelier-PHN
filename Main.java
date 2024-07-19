@@ -33,14 +33,13 @@ public class Main {
                 "10. Générer un relevé\n"+
                 "0. Quitter\n");
 
-            System.out.print("Choix : ");
+            //System.out.print("Choix : ");
             int choix = entrer();
 
             switch (choix) {
                 case 1 -> {
                     System.out.println("Ajouter un compte\n");
                     System.out.println("1. Compte Courant\n2. Compte Epargne\n");
-                    System.out.print("Choix : ");
                     int choixCompte = entrer();
                     System.out.print("Numéro de compte: ");
                     String numeroCompte = saisie.next();
@@ -94,7 +93,6 @@ public class Main {
                 }
                 case 6, 7 -> {
                     System.out.print("Type de Compte\n1. Compte Courant\n2. Compte Epargne\n");
-                    System.out.print("Type : ");
                     int choixType =  entrer();
                     if (choixType == 1) {
                         if (choix == 6) {
@@ -133,27 +131,30 @@ public class Main {
                     String numeroCompte = saisie.next();
                     banque.genererReleve(numeroCompte);
                 }
-                case 0 -> System.exit(0);
+                case 0 ->System.exit(0);
                 default -> System.out.println("Choix invalide !");
             }
         }
     }
-
+    static Scanner saisie=new Scanner(System.in);
     public static int entrer(){
-        int choix;
-        try {
-            Scanner saisie=new Scanner(System.in);
-            choix=saisie.nextInt();
+        while (true) {
+            
+        
+            int choix;
+            try {
+                System.out.print("choix : ");
+                choix=saisie.nextInt();
 
             
-        } catch (Exception e) {
-            System.out.println("saisi invalide ! recommencez ");
-            System.out.print("choix");
-            entrer();
-            return 0;
-        }
-       return choix;
+            } catch (Exception e) {
+                System.out.println("saisi invalide ! recommencez");
+                saisie.nextLine();
+                continue;
+            }
+        return choix;
 
+    }
     }
 
 
