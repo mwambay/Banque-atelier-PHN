@@ -5,6 +5,9 @@ public abstract class CompteBancaire {
     protected String titulaire;
     protected double solde;
 
+
+    //public abstract String toJSON();
+
     public CompteBancaire(String numeroCompte, String titulaire, double solde) {
         this.numeroCompte = numeroCompte;
         this.titulaire = titulaire;

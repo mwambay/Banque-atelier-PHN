@@ -1,6 +1,12 @@
+import java.io.*;
+import java.util.*;
+import org.json.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import Banque.Banque;
+import Comptes.CompteBancaire;
 import Comptes.CompteCourant;
 import Comptes.CompteEpargne;
 
@@ -27,14 +33,14 @@ public class Main {
                 "0. Quitter\n");
 
             System.out.print("Choix : ");
-            int choix = saisie.nextInt();
+            int choix = entrer();
 
             switch (choix) {
                 case 1 -> {
                     System.out.println("Ajouter un compte\n");
                     System.out.println("1. Compte Courant\n2. Compte Epargne\n");
                     System.out.print("Choix : ");
-                    int choixCompte = saisie.nextInt();
+                    int choixCompte = entrer();
                     System.out.print("Numéro de compte: ");
                     String numeroCompte = saisie.next();
                     System.out.print("Titulaire: ");
@@ -88,7 +94,7 @@ public class Main {
                 case 6, 7 -> {
                     System.out.print("Type de Compte\n1. Compte Courant\n2. Compte Epargne\n");
                     System.out.print("Type : ");
-                    int choixType = saisie.nextInt();
+                    int choixType =  entrer();
                     if (choixType == 1) {
                         if (choix == 6) {
                             int nombre = banque.compterComptesParType(CompteCourant.class);
@@ -131,4 +137,23 @@ public class Main {
             }
         }
     }
+
+    public static int entrer(){
+        int choix;
+        try {
+            Scanner saisie=new Scanner(System.in);
+        choix=saisie.nextInt();
+
+            
+        } catch (Exception e) {
+            System.out.println(e.getCause());
+            System.out.println("choix");
+            entrer();
+            return 0;
+        }
+       return choix;
+
+    }
+
+
 }
