@@ -51,11 +51,15 @@ public class Main {
                         double decouvertAutorise = saisie.nextDouble();
                         CompteCourant cc = new CompteCourant(numeroCompte, titulaire, solde, decouvertAutorise);
                         banque.ajouterCompte(cc);
+                        banque.sauvegarderComptes("comptes.txt");
+
                     } else if (choixCompte == 2) {
                         System.out.print("Taux d'intérêt: ");
                         double tauxInteret = saisie.nextDouble();
                         CompteEpargne ce = new CompteEpargne(numeroCompte, titulaire, solde, tauxInteret);
                         banque.ajouterCompte(ce);
+                        banque.sauvegarderComptes("comptes.txt");
+
                     }
                 }
                 case 2 -> {
