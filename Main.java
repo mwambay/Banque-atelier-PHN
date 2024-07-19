@@ -1,8 +1,4 @@
-import java.io.*;
-import java.util.*;
-import org.json.*;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.Scanner;
 
 import Banque.Banque;
@@ -10,13 +6,18 @@ import Comptes.CompteBancaire;
 import Comptes.CompteCourant;
 import Comptes.CompteEpargne;
 
+
+
 public class Main {
     public static void main(String[] args) {
         Banque banque = new Banque();
         Scanner saisie = new Scanner(System.in);
-        CompteCourant cc1 = new CompteCourant("123", "Alice", 1000, 500);
-        CompteEpargne ce1 = new CompteEpargne("456", "Bob", 2000, 2.5);
-
+        //CompteCourant cc1 = new CompteCourant("123", "Alice", 1000, 500);
+        //CompteEpargne ce1 = new CompteEpargne("456", "Bob", 2000, 2.5);
+        //banque.ajouterCompte(ce1);
+        //banque.ajouterCompte(cc1);
+        //banque.sauvegarderComptes("comptes.txt");
+        banque.chargerComptes("comptes.txt");
         System.out.println("Bienvenue dans notre banque\n");
         while (true) {
             System.out.println("Menu\n"+
@@ -142,12 +143,12 @@ public class Main {
         int choix;
         try {
             Scanner saisie=new Scanner(System.in);
-        choix=saisie.nextInt();
+            choix=saisie.nextInt();
 
             
         } catch (Exception e) {
-            System.out.println(e.getCause());
-            System.out.println("choix");
+            System.out.println("saisi invalide ! recommencez ");
+            System.out.print("choix");
             entrer();
             return 0;
         }

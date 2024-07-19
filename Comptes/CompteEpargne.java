@@ -20,4 +20,8 @@ public class CompteEpargne extends CompteBancaire {
         System.out.println("Solde: " + solde);
         System.out.println("Taux d'intérêt: " + tauxInteret + "%");
     }
+    @Override
+    public String toText() {
+        return "CompteEpargne," + super.toText() + "," + tauxInteret;
+    }
 }

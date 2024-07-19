@@ -23,4 +23,8 @@ public class CompteCourant extends CompteBancaire {
         System.out.println("Solde: " + solde);
         System.out.println("Découvert autorisé: " + decouvertAutorise);
     }
+    @Override
+    public String toText() {
+        return "CompteCourant," + super.toText() + "," + decouvertAutorise;
+    }
 }

@@ -1,5 +1,10 @@
 package Banque;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,5 +119,26 @@ public class Banque {
         }
     }
 
+    public void sauvegarderComptes(String cheminFichier) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(cheminFichier))) {
+            for (CompteBancaire compte : comptes.values()) {
+                writer.write(compte.toText());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void chargerComptes(String cheminFichier) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(cheminFichier))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                CompteBancaire compte = CompteBancaire.fromText(line);
+                ajouterCompte(compte);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
