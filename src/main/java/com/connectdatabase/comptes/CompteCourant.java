@@ -1,5 +1,9 @@
 package com.connectdatabase.comptes;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class CompteCourant extends CompteBancaire {
     private double decouvertAutorise;
 
@@ -23,8 +27,17 @@ public class CompteCourant extends CompteBancaire {
         System.out.println("Solde: " + solde);
         System.out.println("Découvert autorisé: " + decouvertAutorise);
     }
+
     @Override
-    public String toText() {
-        return "CompteCourant," + super.toText() + "," + decouvertAutorise;
+    public void sauvegarder(Connection conn) throws SQLException {
+        String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, decouvertAutorise) VALUES (?, ?, ?, 'CompteCourant', ?) " +
+                       "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde), decouvertAutorise = VALUES(decouvertAutorise)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, numeroCompte);
+            stmt.setString(2, titulaire);
+            stmt.setDouble(3, solde);
+            stmt.setDouble(4, decouvertAutorise);
+            stmt.executeUpdate();
+        }
     }
 }

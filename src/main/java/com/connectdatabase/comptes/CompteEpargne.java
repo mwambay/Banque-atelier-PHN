@@ -1,6 +1,10 @@
 package com.connectdatabase.comptes;
 
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class CompteEpargne extends CompteBancaire {
     private double tauxInteret;
 
@@ -21,8 +25,17 @@ public class CompteEpargne extends CompteBancaire {
         System.out.println("Solde: " + solde);
         System.out.println("Taux d'intérêt: " + tauxInteret + "%");
     }
+
     @Override
-    public String toText() {
-        return "CompteEpargne," + super.toText() + "," + tauxInteret;
+    public void sauvegarder(Connection conn) throws SQLException {
+        String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, tauxInteret) VALUES (?, ?, ?, 'CompteEpargne', ?) " +
+                       "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde), tauxInteret = VALUES(tauxInteret)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, numeroCompte);
+            stmt.setString(2, titulaire);
+            stmt.setDouble(3, solde);
+            stmt.setDouble(4, tauxInteret);
+            stmt.executeUpdate();
+        }
     }
 }

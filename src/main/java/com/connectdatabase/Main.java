@@ -1,28 +1,37 @@
-
 package com.connectdatabase;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.connectdatabase.banques.*;
 import com.connectdatabase.comptes.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
+import com.connectdatabase.database.*;;
+
 
 
 public class Main {
-    public static void main(String[] args) {
-        Banque banque = new Banque();
+    public static void main(String[] args) throws SQLException {
+        String jdbcUrl = "jdbc:mysql://localhost:3306/myBanque";
+        String username = "root"; 
+        String password = ""; 
+        String databaseName = "myBanque";
+
+        ConnectDatabase connectDatabase = new ConnectDatabase(jdbcUrl, username, password, databaseName);
+        Banque banque;
+        boolean connected = connectDatabase.connected();
+        if (connected){
+            banque = new Banque(jdbcUrl, username, password);
+        }
+        else{banque = new Banque();}
+
+        
         Scanner saisie = new Scanner(System.in);
         //CompteCourant cc1 = new CompteCourant("123", "Alice", 1000, 500);
         //CompteEpargne ce1 = new CompteEpargne("456", "Bob", 2000, 2.5);
         //banque.ajouterCompte(ce1);
         //banque.ajouterCompte(cc1);
         //banque.sauvegarderComptes("comptes.txt");
-        banque.chargerComptes("comptes.txt");
         System.out.println("Bienvenue dans notre banque\n");
-        while (true) {
+        while (true && connected) {
             System.out.println("Menu\n"+
                 "1. Ajouter un compte\n"+
                 "2. Supprimer un compte\n"+
@@ -55,14 +64,12 @@ public class Main {
                         double decouvertAutorise = saisie.nextDouble();
                         CompteCourant cc = new CompteCourant(numeroCompte, titulaire, solde, decouvertAutorise);
                         banque.ajouterCompte(cc);
-                        banque.sauvegarderComptes("comptes.txt");
 
                     } else if (choixCompte == 2) {
                         System.out.print("Taux d'intérêt: ");
                         double tauxInteret = saisie.nextDouble();
                         CompteEpargne ce = new CompteEpargne(numeroCompte, titulaire, solde, tauxInteret);
                         banque.ajouterCompte(ce);
-                        banque.sauvegarderComptes("comptes.txt");
 
                     }
                 }
@@ -141,6 +148,10 @@ public class Main {
                 case 0 ->System.exit(0);
                 default -> System.out.println("Choix invalide !");
             }
+        }
+
+        if(!connected){
+            System.err.println("echec de la connexion à la base de donnees");
         }
     }
     static Scanner saisie=new Scanner(System.in);

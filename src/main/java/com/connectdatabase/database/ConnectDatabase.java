@@ -17,7 +17,7 @@ public class ConnectDatabase {
         this.databaseName = databaseName;
     }
 
-    public boolean connect(){
+    public boolean connected(){
         try{
            Connection connection = DriverManager.getConnection(this.jdbcUrl, this.username, this.password);
  
@@ -26,7 +26,7 @@ public class ConnectDatabase {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
             }
         return false;
