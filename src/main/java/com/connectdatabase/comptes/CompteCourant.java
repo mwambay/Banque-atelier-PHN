@@ -1,4 +1,4 @@
-package Comptes;
+package com.connectdatabase.comptes;
 
 public class CompteCourant extends CompteBancaire {
     private double decouvertAutorise;

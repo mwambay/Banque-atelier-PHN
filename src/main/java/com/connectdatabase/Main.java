@@ -1,9 +1,9 @@
 
+package com.connectdatabase;
 import java.util.Scanner;
 
-import Banque.Banque;
-import Comptes.CompteCourant;
-import Comptes.CompteEpargne;
+import com.connectdatabase.banques.*;
+import com.connectdatabase.comptes.*;
 
 
 

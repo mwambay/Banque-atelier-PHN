@@ -1,5 +1,5 @@
-package Banque;
-
+package com.connectdatabase.banques;
+import com.connectdatabase.comptes.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Comptes.CompteBancaire;
 
 public class Banque {
     private Map<String, CompteBancaire> comptes;

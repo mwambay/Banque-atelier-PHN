@@ -1,4 +1,5 @@
-package Comptes;
+package com.connectdatabase.comptes;
+
 
 public class CompteEpargne extends CompteBancaire {
     private double tauxInteret;
