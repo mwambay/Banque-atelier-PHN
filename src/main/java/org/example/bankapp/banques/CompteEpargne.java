@@ -1,4 +1,5 @@
-package com.connectdatabase.comptes;
+package org.example.bankapp.banques;
+
 
 
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class CompteEpargne extends CompteBancaire {
     @Override
     public void sauvegarder(Connection conn) throws SQLException {
         String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, taux) VALUES (?, ?, ?, 'CompteEpargne', ?) " +
-                       "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde),  taux = VALUES(taux)";
+                "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde),  taux = VALUES(taux)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, numeroCompte);
             stmt.setString(2, titulaire);
@@ -39,3 +40,4 @@ public class CompteEpargne extends CompteBancaire {
         }
     }
 }
+

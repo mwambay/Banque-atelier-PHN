@@ -1,4 +1,7 @@
-package com.connectdatabase.comptes;
+package org.example.bankapp.banques;
+
+
+import javafx.beans.value.ObservableValue;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -76,5 +79,6 @@ public abstract class CompteBancaire {
         this.solde = solde;
     }
 
-    
+
+
 }

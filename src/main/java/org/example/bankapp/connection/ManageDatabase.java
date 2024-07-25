@@ -1,5 +1,6 @@
-package com.connectdatabase.database;
-import com.connectdatabase.comptes.CompteBancaire;
+package org.example.bankapp.connection;
+
+import org.example.bankapp.banques.CompteBancaire;
 
 import java.sql.*;
 
@@ -8,35 +9,16 @@ public class ManageDatabase {
     static ConnectDatabase con= new ConnectDatabase();
 
 
-    public void createTable() {
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS users ("
-                + "id INT AUTO_INCREMENT PRIMARY KEY, "
-                + "name VARCHAR(100) NOT NULL, "
-                + "email VARCHAR(100) NOT NULL UNIQUE)";
-
-        try (Connection connection = con.connected();
-             Statement statement = connection.createStatement()) {
-
-            statement.execute(createTableSQL);
-            System.out.println("Table 'users' créée avec succès!");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void insertDataUSers(String numeroCompte,String titulaire,Double solde, Double tauxInteret) throws SQLException {
+        String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, taux) VALUES (?, ?, ?, 'CompteEpargne', ?) " +
+                "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde),  taux = VALUES(taux)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, numeroCompte);
+            stmt.setString(2, titulaire);
+            stmt.setDouble(3, solde);
+            stmt.setDouble(4, tauxInteret);
+            stmt.executeUpdate();
         }
-    }
-
-    public void insertDataUSers() throws SQLException {
-        String insertDataSQL = "INSERT INTO users (name, email) VALUES "
-                + "('Jenovic Mwambay', '21MK406@esisalama.org'), "
-                + "('Steve Jobs', 'Steve.Jobs@example.com')";
-
-
-            Connection connection= con.connected();
-             Statement statement = connection.createStatement();
-
-            statement.executeUpdate(insertDataSQL);
-            System.out.println("Données insérées avec succès!");
-
 
 
     }
@@ -45,17 +27,17 @@ public class ManageDatabase {
     public void selectDataUsers() throws SQLException {
         String selectDataSQL = "SELECT * FROM users";
 
-            Connection connection = con.connected();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(selectDataSQL);
+        Connection connection = con.connected();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(selectDataSQL);
 
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email);
-            }
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String email = resultSet.getString("email");
+            System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email);
+        }
 
 
     }
@@ -64,7 +46,7 @@ public class ManageDatabase {
     public void modifier(String newName,String numeroCompte,Double newSolde) throws SQLException {
         String query = "UPDATE CompteBancaire SET titulaire = ?, solde = ? WHERE numeroCompte = ?";
         try ( Connection conn= con.connected();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, newName);
             stmt.setDouble(2, newSolde);
             stmt.setString(3, numeroCompte);
@@ -84,7 +66,6 @@ public class ManageDatabase {
         }
         return 0;
     }
-
     public void inserer(String numeroCompte,String titulaire,Double solde, Double tauxInteret) throws SQLException {
         String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, tauxInteret) VALUES (?, ?, ?, 'CompteEpargne', ?) " +
                 "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde), tauxInteret = VALUES(tauxInteret)";
@@ -178,6 +159,6 @@ public class ManageDatabase {
             stmt.executeUpdate();
         }
     }
-    }
+}
 
 

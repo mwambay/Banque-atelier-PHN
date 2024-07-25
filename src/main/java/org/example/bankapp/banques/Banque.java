@@ -1,21 +1,18 @@
-package com.connectdatabase.banques;
+package org.example.bankapp.banques;
+import org.example.bankapp.connection.ConnectDatabase;
+import org.example.bankapp.connection.ManageDatabase;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import com.connectdatabase.comptes.CompteBancaire;
-import com.connectdatabase.database.ConnectDatabase;
-import com.connectdatabase.database.ManageDatabase;
 
 
 public class Banque {
     private Map<String, CompteBancaire> comptes;
     private Connection conn;
-    private static ManageDatabase manage;
+    public static ManageDatabase manage;
     public Banque() {
         comptes = new HashMap<>();
     }
@@ -56,7 +53,7 @@ public class Banque {
     }
 
     public void listerComptesParLettre(char lettre) throws SQLException {
-       manage.listLetrre(lettre);
+        manage.listLetrre(lettre);
     }
 
     public int compterComptesParType(Class<? extends CompteBancaire> type) throws SQLException {
@@ -65,7 +62,7 @@ public class Banque {
     }
 
     public void afficherComptesParType(Class<? extends CompteBancaire> type) throws SQLException {
-      manage.afficheType(type);
+        manage.afficheType(type);
     }
 
     public void afficherDetailsCompte(String numeroCompte) throws SQLException {
@@ -107,3 +104,4 @@ public class Banque {
         }
     }
 }
+
