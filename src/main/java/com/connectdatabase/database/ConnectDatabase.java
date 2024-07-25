@@ -5,31 +5,23 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectDatabase {
-    String jdbcUrl = "jdbc:mysql://localhost:3306/";
+    String jdbcUrl = "jdbc:mysql://localhost:3306/myBank";
     String username = "root"; 
-    String password = ""; 
-    String databaseName = "myBanque";
+    String password = "Cadet1122";
+    String databaseName = "myBank";
 
-    public ConnectDatabase(String jdbcUrl, String username, String password, String databaseName) {
-        this.jdbcUrl = jdbcUrl;
-        this.username = username;
-        this.password = password;
-        this.databaseName = databaseName;
-    }
-
-    public boolean connected(){
+    public Connection connected(){
         try{
-           Connection connection = DriverManager.getConnection(this.jdbcUrl, this.username, this.password);
+           Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
  
             if (connection != null) {
                 System.out.println("Connected to the database!");
-                return true;
+                return connection;
             }
         } catch (SQLException e) {
-            //e.printStackTrace();
-            return false;
+            e.printStackTrace();
             }
-        return false;
+        return connected();
     }
 }
 

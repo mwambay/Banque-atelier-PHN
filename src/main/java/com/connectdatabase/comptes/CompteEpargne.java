@@ -28,8 +28,8 @@ public class CompteEpargne extends CompteBancaire {
 
     @Override
     public void sauvegarder(Connection conn) throws SQLException {
-        String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, tauxInteret) VALUES (?, ?, ?, 'CompteEpargne', ?) " +
-                       "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde), tauxInteret = VALUES(tauxInteret)";
+        String query = "INSERT INTO CompteBancaire (numeroCompte, titulaire, solde, type, taux) VALUES (?, ?, ?, 'CompteEpargne', ?) " +
+                       "ON DUPLICATE KEY UPDATE titulaire = VALUES(titulaire), solde = VALUES(solde),  taux = VALUES(taux)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, numeroCompte);
             stmt.setString(2, titulaire);

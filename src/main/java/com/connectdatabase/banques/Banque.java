@@ -8,52 +8,41 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.connectdatabase.comptes.CompteBancaire;
+import com.connectdatabase.database.ConnectDatabase;
+import com.connectdatabase.database.ManageDatabase;
 
 
 public class Banque {
     private Map<String, CompteBancaire> comptes;
     private Connection conn;
-
+    private static ManageDatabase manage;
     public Banque() {
+        comptes = new HashMap<>();
     }
+
 
     public Banque(String url, String user, String password) throws SQLException {
         comptes = new HashMap<>();
         conn = DriverManager.getConnection(url, user, password);
     }
-
+    static ConnectDatabase con=new ConnectDatabase();
     public void ajouterCompte(CompteBancaire compte) throws SQLException {
+        conn=con.connected();
         compte.sauvegarder(conn);
         comptes.put(compte.getNumeroCompte(), compte);
     }
 
     public void supprimerCompte(String numeroCompte) throws SQLException {
-        String query = "DELETE FROM CompteBancaire WHERE numeroCompte = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, numeroCompte);
-            stmt.executeUpdate();
-        }
+        manage.supprimerCompte(numeroCompte);
         comptes.remove(numeroCompte);
     }
 
     public boolean verifierSiCompteExiste(String numeroCompte) throws SQLException {
-        String query = "SELECT 1 FROM CompteBancaire WHERE numeroCompte = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, numeroCompte);
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
-            }
-        }
+        return manage.verify(numeroCompte);
     }
 
     public void modifierCompte(String numeroCompte, String newName, double newSolde) throws SQLException {
-        String query = "UPDATE CompteBancaire SET titulaire = ?, solde = ? WHERE numeroCompte = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, newName);
-            stmt.setDouble(2, newSolde);
-            stmt.setString(3, numeroCompte);
-            stmt.executeUpdate();
-        }
+        manage.modifier(numeroCompte,newName,newSolde);
         CompteBancaire compte = comptes.get(numeroCompte);
         if (compte != null) {
             compte.setTitulaire(newName);
@@ -62,59 +51,21 @@ public class Banque {
     }
 
     public CompteBancaire rechercherCompteParNom(String nom) throws SQLException {
-        String query = "SELECT * FROM CompteBancaire WHERE titulaire = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, nom);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return CompteBancaire.charger(conn, rs.getString("numeroCompte"));
-                }
-            }
-        }
+        manage.rechercherNom(nom);
         return null;
     }
 
     public void listerComptesParLettre(char lettre) throws SQLException {
-        String query = "SELECT * FROM CompteBancaire WHERE titulaire LIKE ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, lettre + "%");
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CompteBancaire compte = CompteBancaire.charger(conn, rs.getString("numeroCompte"));
-                    if (compte != null) {
-                        compte.afficherDetails();
-                    }
-                }
-            }
-        }
+       manage.listLetrre(lettre);
     }
 
     public int compterComptesParType(Class<? extends CompteBancaire> type) throws SQLException {
-        String query = "SELECT COUNT(*) AS count FROM CompteBancaire WHERE type = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, type.getSimpleName());
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("count");
-                }
-            }
-        }
+        manage.compterType(type);
         return 0;
     }
 
     public void afficherComptesParType(Class<? extends CompteBancaire> type) throws SQLException {
-        String query = "SELECT * FROM CompteBancaire WHERE type = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, type.getSimpleName());
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CompteBancaire compte = CompteBancaire.charger(conn, rs.getString("numeroCompte"));
-                    if (compte != null) {
-                        compte.afficherDetails();
-                    }
-                }
-            }
-        }
+      manage.afficheType(type);
     }
 
     public void afficherDetailsCompte(String numeroCompte) throws SQLException {
@@ -127,19 +78,7 @@ public class Banque {
     }
 
     public void transfererFonds(String numeroDeCompteSource, String numeroDeCompteDestination, double montant) throws SQLException {
-        String query = "UPDATE CompteBancaire SET solde = solde - ? WHERE numeroCompte = ?";
-        try (PreparedStatement stmtSource = conn.prepareStatement(query)) {
-            stmtSource.setDouble(1, montant);
-            stmtSource.setString(2, numeroDeCompteSource);
-            stmtSource.executeUpdate();
-        }
-
-        query = "UPDATE CompteBancaire SET solde = solde + ? WHERE numeroCompte = ?";
-        try (PreparedStatement stmtDestination = conn.prepareStatement(query)) {
-            stmtDestination.setDouble(1, montant);
-            stmtDestination.setString(2, numeroDeCompteDestination);
-            stmtDestination.executeUpdate();
-        }
+        manage.tansfert(numeroDeCompteSource,numeroDeCompteDestination,montant);
 
         CompteBancaire source = comptes.get(numeroDeCompteSource);
         CompteBancaire destination = comptes.get(numeroDeCompteDestination);

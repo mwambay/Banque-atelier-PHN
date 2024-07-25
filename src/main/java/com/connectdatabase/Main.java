@@ -1,4 +1,5 @@
 package com.connectdatabase;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -10,28 +11,16 @@ import com.connectdatabase.database.*;;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/myBanque";
-        String username = "root"; 
-        String password = ""; 
-        String databaseName = "myBanque";
 
-        ConnectDatabase connectDatabase = new ConnectDatabase(jdbcUrl, username, password, databaseName);
+        ConnectDatabase con=new ConnectDatabase();
         Banque banque;
-        boolean connected = connectDatabase.connected();
-        if (connected){
-            banque = new Banque(jdbcUrl, username, password);
-        }
-        else{banque = new Banque();}
-
+        Connection connected= con.connected();
+        banque = new Banque();
         
         Scanner saisie = new Scanner(System.in);
-        //CompteCourant cc1 = new CompteCourant("123", "Alice", 1000, 500);
-        //CompteEpargne ce1 = new CompteEpargne("456", "Bob", 2000, 2.5);
-        //banque.ajouterCompte(ce1);
-        //banque.ajouterCompte(cc1);
-        //banque.sauvegarderComptes("comptes.txt");
+
         System.out.println("Bienvenue dans notre banque\n");
-        while (true && connected) {
+        while (true) {
             System.out.println("Menu\n"+
                 "1. Ajouter un compte\n"+
                 "2. Supprimer un compte\n"+
@@ -150,9 +139,9 @@ public class Main {
             }
         }
 
-        if(!connected){
-            System.err.println("echec de la connexion à la base de donnees");
-        }
+//        if(connected==null){
+//            System.err.println("echec de la connexion à la base de donnees");
+//        }
     }
     static Scanner saisie=new Scanner(System.in);
     public static int entrer(){
