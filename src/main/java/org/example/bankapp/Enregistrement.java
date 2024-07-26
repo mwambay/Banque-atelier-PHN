@@ -4,9 +4,10 @@ import javafx.beans.value.ObservableValue;
 
 public class Enregistrement {
     
-    public  String num, titulaire,solde, type, decouverte, taux;
+    public  String num, titulaire, type;
+    public Double solde,decouverte, taux;
 
-    public Enregistrement(String num, String titulaire, String solde, String type, String decouverte, String taux) {
+    public Enregistrement(String num, String titulaire, Double solde, String type, Double decouverte,Double taux) {
         this.num = num;
         this.titulaire = titulaire;
         this.solde = solde;
@@ -31,11 +32,11 @@ public class Enregistrement {
         this.titulaire = titulaire;
     }
 
-    public String getSolde() {
+    public Double getSolde() {
         return solde;
     }
 
-    public void setSolde(String solde) {
+    public void setSolde(Double solde) {
         this.solde = solde;
     }
 
@@ -47,27 +48,21 @@ public class Enregistrement {
         this.type = type;
     }
 
-    public String getDecouverte() {
+    public Double getDecouverte() {
         return decouverte;
     }
 
-    public void setDecouverte(String decouverte) {
+    public void setDecouverte(Double decouverte) {
         this.decouverte = decouverte;
     }
 
-    public String getTaux() {
+    public Double getTaux() {
         return taux;
     }
 
-    public void setTaux(String taux) {
-
+    public void setTaux(Double taux) {
+    this.taux=taux;
     }
 
-    public ObservableValue<String> nomProperty() {
-        return null;
-    }
 
-    public ObservableValue<String> prenomProperty() {
-        return null;
-    }
 }

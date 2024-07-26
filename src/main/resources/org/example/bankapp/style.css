@@ -1,0 +1,5 @@
+.text-field {
+    border: none; /* Supprime toutes les bordures existantes */
+    border-bottom: 2px solid #000; /* Ajoute une bordure inférieure de 2px de couleur noire */
+    padding: 5px; /* Ajoute un peu de padding pour l'espacement */
+}
